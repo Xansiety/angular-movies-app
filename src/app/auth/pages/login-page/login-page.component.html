@@ -1,1 +1,33 @@
-<p>login-page works!</p>
+<section class="d-flex align-items-center justify-content-center">
+  <form [formGroup]="loginForm" (submit)="onLogin()" autocomplete="off">
+    <div class="row mt-4 text-center">
+      <div class="col-12">
+        <h1 class="text-dark">Login</h1>
+        <img [src]="Images.avatarLogin" alt="login avatar" class="logo" />
+      </div>
+      <div class="col-12">
+        <input
+          type="text"
+          formControlName="username"
+          pInputText
+          placeholder="username"
+          class="form-control"
+        />
+      </div>
+      <div class="col-12 mt-2">
+        <input
+          type="text"
+          formControlName="password"
+          pInputText
+          placeholder="password"
+          class="form-control"
+        />
+      </div>
+      <div class="col-12 mt-2">
+        <button pButton type="submit" label="Login" class="btn btn-primary">
+          Enter to app
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

@@ -10,6 +10,7 @@ import { MovieDetailPageComponent } from './pages/movie-detail-page/movie-detail
     HomePageComponent,
     MovieDetailPageComponent
   ],
-  imports: [SharedModule, MoviesRoutingModule],
+  imports: [
+    SharedModule, MoviesRoutingModule],
 })
 export class MoviesModule {}
