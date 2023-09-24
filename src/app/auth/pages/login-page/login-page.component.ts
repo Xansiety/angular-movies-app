@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ImagesConst } from '../../../../assets/properties/images.const';
 import { AlertService } from '../../../shared/services/alert-service.service';
-import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/login.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   templateUrl: './login-page.component.html',
@@ -39,14 +39,15 @@ export class LoginPageComponent implements OnInit {
       return;
     }
 
-    const payload: LoginRequest = {
+    const requestForm: LoginRequest = {
       username: this.loginForm.get('username')!.value,
       password: this.loginForm.get('password')!.value,
     };
 
-    this.authService.login(payload).subscribe({
-      next: (response) => {
-        console.log(response);
+    this.authService.login(requestForm).subscribe({
+      next: ({ request_token }) => {
+        sessionStorage.setItem('request_token', request_token);
+        this.authService.setRequestToken = request_token;
       },
       error: (error) => {
         this.alertService.showError('Error', error.message);
