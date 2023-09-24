@@ -1,1 +1,58 @@
-<p>movie-detail-page works!</p>
+<app-square-loader *ngIf="isLoading; else movieContainer"></app-square-loader>
+
+<ng-template #movieContainer>
+  <div *ngIf="movie"
+       class="row container-movie">
+    <h1> Details of {{ movie.title }} </h1>
+
+    <div class="col-12 col-md-6 text-center p-0">
+      <img [src]="displayPoster()"
+           alt="{{ movie.title }}"
+           class="img-fluid">
+    </div>
+    <div class="col-12 col-md-6 mt-4">
+      <div class="mt-2">
+        <strong>Release date:</strong> {{ movie.release_date }}
+      </div>
+      <div class="mt-2">
+        <strong>Duration:</strong> {{ movie.runtime }} min
+      </div>
+      <strong>Gender:</strong>
+      <span *ngFor="let genre of movie.genres"
+            class="d-inline">
+        <p-tag [value]="genre.name"
+               severity="info">
+        </p-tag>
+      </span>
+      <div class="mt-2">
+        <strong>Slogan: </strong> <b>{{movie.tagline}}</b>
+      </div>
+      <div class="mt-2">
+        <strong>Overview:</strong> {{ movie.overview }}
+      </div>
+      <div class="mt-2">
+        <strong>Total votes:</strong> {{ movie.vote_count }}
+      </div>
+      <div class="mt-2">
+        <strong>Vote average:</strong> {{ movie.vote_average }}
+      </div>
+      <div class="mt-2">
+        <strong>Popularity:</strong> {{ movie.popularity }}
+      </div>
+      <div class="mt-2">
+        <strong>Original language:</strong> {{ movie.original_language }}
+      </div>
+      <div class="mt-2">
+        <strong>Original title:</strong> {{ movie.original_title }}
+      </div>
+
+      <div class="mt-3">
+        <app-back-to
+          [title]="'Back to movies'"
+          [path]="'/movies'">
+        ></app-back-to>
+      </div>
+    </div>
+  </div>
+
+</ng-template>

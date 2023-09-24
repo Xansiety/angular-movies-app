@@ -4,6 +4,7 @@ import { ImagesConst } from '../../../../assets/properties/images.const';
 import { AlertService } from '../../../shared/services/alert-service.service';
 import { LoginRequest } from '../../models/login.model';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './login-page.component.html',
@@ -21,7 +22,8 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private alertService: AlertService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -48,6 +50,7 @@ export class LoginPageComponent implements OnInit {
       next: ({ request_token }) => {
         sessionStorage.setItem('request_token', request_token);
         this.authService.setRequestToken = request_token;
+        this.router.navigate(['/movies']);
       },
       error: (error) => {
         this.alertService.showError('Error', error.message);

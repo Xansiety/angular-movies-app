@@ -1,0 +1,25 @@
+<p-card [header]="movie.title"
+        [subheader]="movie.release_date"
+        [style]="{width: '360px'}"
+        styleClass="p-card-shadow animated-hover">
+  <ng-template pTemplate="header">
+    <img [alt]="movie.title"
+         [src]="displayPoster()">
+  </ng-template>
+  <p>
+    {{ movie.overview | slice:0:180 }}
+    <span *ngIf="movie.overview.length > 180">...</span>
+  </p>
+
+  <p class="d-flex justify-content-center gap-2">
+    <span class="p-tag p-tag-rounded p-tag-info">Votes: {{ movie.vote_average }}</span>
+    <span class="p-tag p-tag-rounded p-tag-success">Popularity: {{ movie.popularity }}</span>
+  </p>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Show Details of "
+              icon="pi pi-eye"
+              styleClass="p-button-secondary"
+              (click)="onShowDetails()"></p-button>
+  </ng-template>
+</p-card>

@@ -4,11 +4,6 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'prefix',
-    redirectTo: 'login',
-  },
-  {
     path: 'login',
     component: LoginPageComponent,
   },
@@ -18,6 +13,7 @@ const routes: Routes = [
   },
   {
     path: '**',
+    pathMatch: 'full',
     redirectTo: 'login',
   },
 ];

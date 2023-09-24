@@ -1,16 +1,15 @@
 import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-  HttpParams,
+HttpClient,
+HttpErrorResponse,
+HttpHeaders
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import {
-  PostParamsRequest,
-  GetParamsRequest,
-} from './models/params-request.model';
 import { apiConfig } from '../../../api/api.config';
+import {
+GetParamsRequest,
+PostParamsRequest,
+} from './models/params-request.model';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService<T> {
@@ -25,6 +24,16 @@ export class ApiService<T> {
   get getApiKey(): string {
     return apiConfig.ApiKey;
   }
+
+  getByIdService({ url, id }: { url: string; id: number }): Observable<T> {
+    const httpConfig = this.httpConfig;
+
+    return this.http.get<T>(`${url}/${id}`, httpConfig).pipe(
+      map((response) => response),
+      catchError(this.handleError)
+    );
+  }
+
 
   getService({ url, params }: GetParamsRequest): Observable<T> {
     const httpConfig = this.httpConfig;
