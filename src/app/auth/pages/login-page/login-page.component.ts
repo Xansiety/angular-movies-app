@@ -49,6 +49,7 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(requestForm).subscribe({
       next: ({ request_token }) => {
         sessionStorage.setItem('request_token', request_token);
+        sessionStorage.setItem('loginFlag', true.toString());
         this.authService.setRequestToken = request_token;
         this.router.navigate(['/movies']);
       },

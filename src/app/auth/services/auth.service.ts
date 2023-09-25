@@ -14,15 +14,17 @@ export interface UserLogged {
   providedIn: 'root',
 })
 export class AuthService {
-
   constructor(private readonly apiService: ApiService<any>) {}
 
   private userLogged$ = new BehaviorSubject<UserLogged | null>(null);
-  private requestToken$ = new BehaviorSubject<string | null>(sessionStorage.getItem('request_token') ?? null);
+  private requestToken$ = new BehaviorSubject<string | null>(
+    sessionStorage.getItem('request_token') ?? null
+  );
 
   set setUserLogged(userLogged: UserLogged | null) {
     this.userLogged$.next(userLogged);
   }
+
   get getUserLogged(): UserLogged | null {
     return this.userLogged$.getValue();
   }
@@ -33,6 +35,10 @@ export class AuthService {
 
   set setRequestToken(requestToken: string | null) {
     this.requestToken$.next(requestToken);
+  }
+
+  get isUserLogged(): boolean {
+    return this.getRequestToken !== null;
   }
 
   login(loginRequest: LoginRequest): Observable<any> {
@@ -47,8 +53,6 @@ export class AuthService {
       payload,
     };
 
-    return this.apiService.postService(configPost).pipe(
-      take(1),
-    );
+    return this.apiService.postService(configPost).pipe(take(1));
   }
 }
