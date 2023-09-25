@@ -5,37 +5,42 @@ import { endpoints } from '../../../api/api.config';
 import { PopularMoviesResponse, Movie } from '../../models/movie.model';
 import { AlertService } from '../../../shared/services/alert-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
 
 @Component({
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent
+  extends BaseComponent<PopularMoviesResponse>
+  implements OnInit
+{
   public readonly today = new Date();
   public popularMovies: Movie[] = [];
-  public isLoading = true;
 
   constructor(
-    private readonly apiService: ApiService<PopularMoviesResponse>,
+    protected apiService: ApiService<PopularMoviesResponse>,
     private alertService: AlertService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super(apiService);
+  }
 
-  ngOnInit(): void {
-    const httpGetConfig: GetParamsRequest = { url: endpoints.movies.popular };
-    this.apiService.getService(httpGetConfig).subscribe({
-      next: (response) => {
-        this.popularMovies = response.results;
-      },
-      error: (error) => {
-        this.alertService.showError(
-          'Error',
-          'An error has occurred, please try again later.'
-        );
-      },
-      complete: () => (this.isLoading = false),
-    });
+  override set setResponseService(value: PopularMoviesResponse) {
+    this.popularMovies = value.results;
+  }
+
+  override ngOnInit(): void {
+    const httpGetConfig: GetParamsRequest = {
+      url: endpoints.movies.popular,
+    };
+    this.getParamsRequest = httpGetConfig;
+    this.getRequest();
+  }
+
+  override onError(): void {
+    this.alertService.showError('Error', 'Error loading movies');
   }
 
   onShowDetails({ id }: Movie) {

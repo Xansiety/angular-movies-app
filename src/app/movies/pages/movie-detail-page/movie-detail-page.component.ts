@@ -5,23 +5,32 @@ import { endpoints } from '../../../api/api.config';
 import { ApiService } from '../../../shared/services/base/api.service';
 import { MovieDetailResponse } from '../../models/movie.model';
 import { AlertService } from './../../../shared/services/alert-service.service';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 
 @Component({
   templateUrl: './movie-detail-page.component.html',
   styleUrls: ['./movie-detail-page.component.scss'],
 })
-export class MovieDetailPageComponent implements OnInit {
-  public isLoading = true;
+export class MovieDetailPageComponent
+  extends BaseComponent<MovieDetailResponse>
+  implements OnInit
+{
   public movie: MovieDetailResponse = {} as MovieDetailResponse;
+
+  override set setResponseService(value: MovieDetailResponse) {
+    this.movie = value;
+  }
 
   constructor(
     private readonly apiService: ApiService<MovieDetailResponse>,
-    private readonly activeRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly alertService: AlertService
-  ) {}
+    private alertService: AlertService,
+    private router: Router,
+    protected activeRoute: ActivatedRoute
+  ) {
+    super(apiService);
+  }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     this.activeRoute.params.subscribe((params) => {
       this.getMovieDetail(params['id']);
     });
@@ -36,15 +45,13 @@ export class MovieDetailPageComponent implements OnInit {
       url: endpoints.movies.detail,
       id,
     };
-    this.apiService.getByIdService(getHttpConfig).subscribe({
-      next: (response) => {
-        this.movie = response;
-      },
-      error: (error) => {
-        this.alertService.showError('Error', error.message);
-        this.router.navigate(['/movies']);
-      },
-      complete: () => (this.isLoading = false),
-    });
+
+    this.getIdParamsRequest = getHttpConfig;
+    this.getByIdRequest();
+  }
+
+  override onError(): void {
+    this.alertService.showError('Error', 'Error loading movie detail');
+    this.router.navigate(['/movies']);
   }
 }

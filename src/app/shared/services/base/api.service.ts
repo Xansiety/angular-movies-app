@@ -13,6 +13,7 @@ PostParamsRequest,
 
 @Injectable({ providedIn: 'root' })
 export class ApiService<T> {
+
   protected httpConfig = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
