@@ -4,6 +4,7 @@ import { PostParamsRequest } from 'src/app/shared/services/base/models/params-re
 import { ApiService } from '../../shared/services/base/api.service';
 import { LoginRequest } from '../models/login.model';
 import { endpoints } from './../../api/api.config';
+import { StorageService } from './storage.service';
 
 export interface UserLogged {
   username: string;
@@ -14,11 +15,14 @@ export interface UserLogged {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private readonly apiService: ApiService<any>) {}
+  constructor(
+    private readonly apiService: ApiService<any>,
+    private readonly storageService: StorageService
+  ) {}
 
   private userLogged$ = new BehaviorSubject<UserLogged | null>(null);
   private requestToken$ = new BehaviorSubject<string | null>(
-    sessionStorage.getItem('request_token') ?? null
+    this.storageService.getJsonValue('request_token') ?? null
   );
 
   set setUserLogged(userLogged: UserLogged | null) {

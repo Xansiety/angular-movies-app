@@ -6,6 +6,7 @@ import { PopularMoviesResponse, Movie } from '../../models/movie.model';
 import { AlertService } from '../../../shared/services/alert-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
+import { StorageService } from '../../../auth/services/storage.service';
 
 @Component({
   templateUrl: './home-page.component.html',
@@ -22,7 +23,8 @@ export class HomePageComponent
     protected apiService: ApiService<PopularMoviesResponse>,
     private alertService: AlertService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private readonly storageService: StorageService
   ) {
     super(apiService);
   }
@@ -47,5 +49,10 @@ export class HomePageComponent
     this.router.navigate(['/movies/detail', id], {
       relativeTo: this.route,
     });
+  }
+
+  logOut(): void {
+    this.storageService.clearAllItems();
+    this.router.navigate(['/auth']);
   }
 }

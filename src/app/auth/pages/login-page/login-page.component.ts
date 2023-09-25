@@ -5,6 +5,8 @@ import { AlertService } from '../../../shared/services/alert-service.service';
 import { LoginRequest } from '../../models/login.model';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { SecurityStorageService } from '../../services/security-storage.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   templateUrl: './login-page.component.html',
@@ -23,7 +25,8 @@ export class LoginPageComponent implements OnInit {
     private fb: FormBuilder,
     private alertService: AlertService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private readonly storageService: StorageService
   ) {}
 
   ngOnInit(): void {}
@@ -48,8 +51,9 @@ export class LoginPageComponent implements OnInit {
 
     this.authService.login(requestForm).subscribe({
       next: ({ request_token }) => {
-        sessionStorage.setItem('request_token', request_token);
-        sessionStorage.setItem('loginFlag', true.toString());
+        this.storageService.setJsonValue('request_token', request_token);
+        this.storageService.setJsonValue('loginFlag', true.toString());
+
         this.authService.setRequestToken = request_token;
         this.router.navigate(['/movies']);
       },

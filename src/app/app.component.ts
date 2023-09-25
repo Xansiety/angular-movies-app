@@ -4,6 +4,7 @@ import { ApiService } from './shared/services/base/api.service';
 import { GetParamsRequest } from './shared/services/base/models/params-request.model';
 import { BaseComponent } from './shared/components/base/base.component';
 import { LoginResponse } from './auth/models/login.model';
+import { StorageService } from './auth/services/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import { LoginResponse } from './auth/models/login.model';
 export class AppComponent extends BaseComponent<LoginResponse> {
   title = 'angular-movies-app';
 
-  constructor(protected readonly apiService: ApiService<LoginResponse>) {
+  constructor(protected readonly apiService: ApiService<LoginResponse>, private readonly storageService: StorageService) {
     super(apiService);
 
     const getConfig: GetParamsRequest = { url: `${endpoints.auth.getToken}` };
@@ -23,6 +24,6 @@ export class AppComponent extends BaseComponent<LoginResponse> {
   }
 
   override set setResponseService(value: LoginResponse) {
-    sessionStorage.setItem('request_token', value.request_token);
+    this.storageService.setJsonValue('request_token', value.request_token);
   }
 }

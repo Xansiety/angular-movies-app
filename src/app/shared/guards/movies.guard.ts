@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
+import { StorageService } from '../../auth/services/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ import { Router } from '@angular/router';
 export class MoviesGuard implements CanActivate {
   constructor(
     @Inject(AuthService) private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private readonly storageService: StorageService
   ) {}
 
   canActivate(
@@ -27,7 +29,7 @@ export class MoviesGuard implements CanActivate {
     | boolean
     | UrlTree {
     const isAuth = this.authService.isUserLogged;
-    const isLogged = sessionStorage.getItem('loginFlag') === 'true';
+    const isLogged =  this.storageService.getJsonValue('loginFlag') === 'true';
     if (isAuth && isLogged) {
       return true;
     }

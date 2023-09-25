@@ -3,8 +3,13 @@
 </ng-template>
 
 <ng-template #movieContainer>
-  <h1> Popular Movies {{ today | date: 'dd/MM/yyyy' }}
-  </h1>
+  <h1> Popular Movies {{ today | date: 'dd/MM/yyyy' }} </h1>
+
+  <button class="btn btn-primary"
+          (click)="logOut()">
+    Log Out
+  </button>
+
   <hr>
   <div class="row mt-4"
        style="border: 1px solid red">
